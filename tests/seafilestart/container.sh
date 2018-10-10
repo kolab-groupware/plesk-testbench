@@ -19,7 +19,24 @@ plesk bin extension -i /root/data/seafile.zip || exit 1
 
 echo "Looking for errors:"
 #There shouldn't be any errors
-grep ERR /var/log/plesk/panel.log || exit 0
-echo "Found errors in the following log:"
-cat /var/log/plesk/panel.log
-exit 1
+grep ERR /var/log/plesk/panel.log && echo "Found errors in the following log:" && cat /var/log/plesk/panel.log && exit 1
+
+echo "Found no errors"
+
+plesk bin poweruser --on -ip $IP -domain bionic.whd.pxts.ch
+plesk bin poweruser --off
+
+#Ensure the domain home is existing
+#/var/www/vhosts/bionic.whd.pxts.ch/
+
+# Wait for hooks to execute that were listening on the domain being created
+sleep 5
+
+# Ensure seafile is running
+# $(systemctl | grep sea | grep running | wc -l)
+
+echo "Looking for errors after setting up domain:"
+#There shouldn't be any errors
+grep ERR /var/log/plesk/panel.log && echo "Found errors in the following log:" && cat /var/log/plesk/panel.log && exit 1
+
+echo "Found no errors"
