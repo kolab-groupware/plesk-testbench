@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-LICENSE=$(cat /root/license)
+LICENSE=$(cat /license)
 
 bash /root/ai \
         --all-versions \

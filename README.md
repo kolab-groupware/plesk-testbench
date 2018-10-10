@@ -14,3 +14,15 @@ To run:
 * Use start.sh to run the container and `docker exec -ti $CONTAINERID /bin/bash' to attach
 * Webinterface is on localhost:8880
 
+# Ports to expose
+* 21 - ftp
+* 25 - smtp
+* 53 - dns
+* 80 - http
+* 110 - pop3
+* 143 - imaps
+* 443 - https
+* 3306 - mysql
+* 8880 - plesk via http
+* 8443 - plesk via https
+* 8447 - autoinstaller
