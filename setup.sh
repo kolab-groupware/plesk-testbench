@@ -39,26 +39,27 @@ plesk bin subscription --create kolab-customer.$DOMAIN -owner kolab-reseller -se
 
 function waitForServiceState() {
     while true; do
-        if [ $(systemctl is-active $1) == $2 ]; then
+        STATE=$(systemctl is-active $1)
+        if [ $STATE == $2 ]; then
             break
         fi
-
-        sleep 1
+        if [ $STATE == "failed" ]; then
+            echo "The service $1 we're waiting on failed."
+            break
+        fi
+        echo "Waiting for $1 to go to state $2, but it's in $STATE"
+        sleep 3
     done
 }
 
 # For lack of a better method we wait until the service is started, and assume the setup is complete with that.
 waitForServiceState seafile@8000.service "active"
-waitForServiceState seafile@8005.service "active"
 waitForServiceState seahub@8001.service "active"
-waitForServiceState seahub@8006.service "active"
 
 # Teardown so we can safely commit the container (otherwise we may still have tasks in progress)
 psa_service stopall
 systemctl stop seafile@8000.service
-systemctl stop seafile@8005.service
 systemctl stop seahub@8001.service
-systemctl stop seahub@8006.service
 systemctl stop mariadb.service
 systemctl stop httpd.service
 
