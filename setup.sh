@@ -27,7 +27,7 @@ plesk bin poweruser --off
 plesk bin reseller_plan -c "Kolab Reseller Plan" -ext_permission_kolab_manage_kolab true -ext_permission_seafile_manage_seafile true
 plesk bin reseller --create kolab-reseller -name "Kolab Reseller" -passwd Welcome2KolabSystems -country US -service-plan "Kolab Reseller Plan"
 
-plesk bin service_plan -c "Kolab Domain" -owner kolab-reseller -ext_permission_kolab_manage_kolab true
+plesk bin service_plan -c "Kolab Domain" -owner kolab-reseller -ext_permission_kolab_manage_kolab true -ext_permission_seafile_manage_seafile false
 
 # Seafile addon
 plesk bin service_plan_addon -c "Seafile" -owner kolab-reseller -ext_permission_seafile_manage_seafile true
