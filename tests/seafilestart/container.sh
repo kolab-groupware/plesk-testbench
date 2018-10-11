@@ -23,7 +23,7 @@ grep ERR /var/log/plesk/panel.log && echo "Found errors in the following log:" &
 
 echo "Found no errors"
 
-plesk bin poweruser --on -ip $IP -domain bionic.whd.pxts.ch
+plesk bin poweruser --on -ip $IP -domain centos7.dockertest.pxts.ch
 plesk bin poweruser --off
 
 #Ensure the domain home is existing

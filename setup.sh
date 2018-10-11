@@ -10,6 +10,7 @@ psa_service startall
 
 # Actual setup script starts here
 IP=$(hostname -i)
+DOMAIN=centos7.docker.pxts.ch
 
 # Install extensions
 cp /root/data/panel.ini /usr/local/psa/admin/conf/
@@ -19,7 +20,7 @@ chmod 644 /usr/local/psa/admin/plib/modules/kolab/library/LicenseFaker.php
 plesk bin extension -i /root/data/seafile.zip
 
 # Setup default domain
-plesk bin poweruser --on -ip $IP -domain bionic.whd.pxts.ch
+plesk bin poweruser --on -ip $IP -domain $DOMAIN
 plesk bin poweruser --off
 
 # Create Kolab Reseller with plan
@@ -33,7 +34,7 @@ plesk bin service_plan_addon -c "Seafile" -owner kolab-reseller -ext_permission_
 
 # Kolab Customer with domain
 plesk bin customer --create kolab-customer -name "Kolab Customer" -passwd Welcome2KolabSystems -country US -notify false
-plesk bin subscription --create kolab-customer.maipo.whd.pxts.ch -owner kolab-reseller -service-plan "Kolab Domain" -ip $IP -login kolab-customer -passwd "Welcome2KolabSystems"
+plesk bin subscription --create kolab-customer.$DOMAIN -owner kolab-reseller -service-plan "Kolab Domain" -ip $IP -login kolab-customer -passwd "Welcome2KolabSystems"
 
 
 function waitForServiceState() {
