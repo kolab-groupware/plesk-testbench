@@ -21,9 +21,8 @@ bash /root/ai \
         --install-component heavy-metal-skin \
         --install-component git \
         --install-component passenger \
-        --install-component ruby \
-        --install-component nodejs \
-        --install-component wp-toolkit
+        --install-component postfix \
+        --install-component dovecot
 
 plesk bin init_conf --init \
         -email admin@pxts.ch \
@@ -37,3 +36,16 @@ plesk bin cloning -u -prepare-public-image true -reset-license false -reset-init
 plesk bin ipmanage --auto-remap-ip-addresses true
 echo DOCKER > /usr/local/psa/var/cloud_id
 rm -rf /root/ai /root/parallels
+
+# Otherwise we'll end up stuckk with the maintenance view if we commit too early
+while grep "maintenance on" /etc/sw-cp-server/conf.d/maintenance ; do
+  echo "Waiting for maintenance to finish..."
+  sleep 3
+done
+
+export PATH=/usr/lib/plesk-9.0:/usr/lib64/plesk-9.0:$PATH
+psa_service stopall
+systemctl stop mariadb.service
+systemctl stop httpd.service
+# This shouldn't be necessary...
+echo "set maintenance off;" > /etc/sw-cp-server/conf.d/maintenance
