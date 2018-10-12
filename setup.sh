@@ -24,8 +24,8 @@ plesk bin poweruser --on -ip $IP -domain $DOMAIN
 plesk bin poweruser --off
 
 # Create Kolab Reseller with plan
-plesk bin reseller_plan -c "Kolab Reseller Plan" -ext_permission_kolab_manage_kolab true -ext_permission_seafile_manage_seafile true
-plesk bin reseller --create kolab-reseller -name "Kolab Reseller" -passwd Welcome2KolabSystems -country US -service-plan "Kolab Reseller Plan"
+plesk bin reseller_plan -c "Kolab Reseller Plan" -ext_permission_kolab_manage_kolab true -ext_permission_seafile_manage_seafile true -create_domains true -manage_phosting true -ip_pool add:$IP
+plesk bin reseller --create kolab-reseller -name "Kolab Reseller" -passwd Welcome2KolabSystems -service-plan "Kolab Reseller Plan" -email "kolab-reseller@$DOMAIN"
 
 plesk bin service_plan -c "Kolab Domain" -owner kolab-reseller -ext_permission_kolab_manage_kolab true -ext_permission_seafile_manage_seafile false
 
@@ -33,7 +33,7 @@ plesk bin service_plan -c "Kolab Domain" -owner kolab-reseller -ext_permission_k
 plesk bin service_plan_addon -c "Seafile" -owner kolab-reseller -ext_permission_seafile_manage_seafile true
 
 # Kolab Customer with domain
-plesk bin customer --create kolab-customer -name "Kolab Customer" -passwd Welcome2KolabSystems -country US -notify false
+plesk bin customer --create kolab-customer -name "Kolab Customer" -passwd Welcome2KolabSystems -notify false -email "kolab-customer@$DOMAIN"
 plesk bin subscription --create kolab-customer.$DOMAIN -owner kolab-reseller -service-plan "Kolab Domain" -ip $IP -login kolab-customer -passwd "Welcome2KolabSystems"
 
 
